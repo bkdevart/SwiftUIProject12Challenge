@@ -21,10 +21,11 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
         }
     }
     
-//    Make it accept an array of NSSortDescriptor objects to get used in its fetch request.
-    init(filterKey: String, filterValue: String, sortDescriptors: [NSSortDescriptor], @ViewBuilder content: @escaping (T) -> Content) {
+    init(filterKey: String, filterValue: String, sortDescriptors: [NSSortDescriptor], predicateType: String,
+         @ViewBuilder content: @escaping (T) -> Content) {
+//        Make it accept a string parameter that controls which predicate is applied. You can use Swift’s string interpolation to place this in the predicate.
         fetchRequest = FetchRequest<T>(entity: T.entity(), sortDescriptors: sortDescriptors,
-                                       predicate: NSPredicate(format: "%K BEGINSWITH %@", filterKey, filterValue))
+                                       predicate: NSPredicate(format: "%K \(predicateType) %@", filterKey, filterValue))
         self.content = content
     }
 }

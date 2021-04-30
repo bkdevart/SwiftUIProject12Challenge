@@ -13,12 +13,14 @@ struct ContentView: View {
     @State var lastNameFilter = "A"
     @State var sortDescriptor = [NSSortDescriptor(keyPath: \Singer.lastName, ascending: true),
                                  NSSortDescriptor(keyPath: \Singer.firstName, ascending: true)]
+    @State var predicateType = "BEGINSWITH"
     
     var body: some View {
         VStack {
             FilteredList(filterKey: "lastName",
                          filterValue: lastNameFilter,
-                         sortDescriptors: sortDescriptor) {
+                         sortDescriptors: sortDescriptor,
+                         predicateType: predicateType) {
                 (singer: Singer) in
                 Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
             }
