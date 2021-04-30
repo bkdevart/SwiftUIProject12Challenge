@@ -11,10 +11,14 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @State var lastNameFilter = "A"
+    @State var sortDescriptor = [NSSortDescriptor(keyPath: \Singer.lastName, ascending: true),
+                                 NSSortDescriptor(keyPath: \Singer.firstName, ascending: true)]
     
     var body: some View {
         VStack {
-            FilteredList(filterKey: "lastName", filterValue: lastNameFilter) {
+            FilteredList(filterKey: "lastName",
+                         filterValue: lastNameFilter,
+                         sortDescriptors: sortDescriptor) {
                 (singer: Singer) in
                 Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
             }
