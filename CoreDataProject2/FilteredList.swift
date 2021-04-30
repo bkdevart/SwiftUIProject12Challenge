@@ -15,17 +15,22 @@ struct FilteredList<T: NSManagedObject, Content: View>: View {
     }
     let content: (T) -> Content
     
+    enum PredicateType: String {
+        case beginsWith = "BEGINSWITH"
+        case contains = "CONTAINS"
+        case containsCI = "CONTAINS[c]"
+    }
+    
     var body: some View {
         List(fetchRequest.wrappedValue, id: \.self) { singer in
             self.content(singer)
         }
     }
     
-    init(filterKey: String, filterValue: String, sortDescriptors: [NSSortDescriptor], predicateType: String,
+    init(filterKey: String, filterValue: String, sortDescriptors: [NSSortDescriptor], predicateType: PredicateType,
          @ViewBuilder content: @escaping (T) -> Content) {
-//        Make it accept a string parameter that controls which predicate is applied. You can use Swift’s string interpolation to place this in the predicate.
         fetchRequest = FetchRequest<T>(entity: T.entity(), sortDescriptors: sortDescriptors,
-                                       predicate: NSPredicate(format: "%K \(predicateType) %@", filterKey, filterValue))
+                                       predicate: NSPredicate(format: "%K \(predicateType.rawValue) %@", filterKey, filterValue))
         self.content = content
     }
 }

@@ -13,14 +13,15 @@ struct ContentView: View {
     @State var lastNameFilter = "A"
     @State var sortDescriptor = [NSSortDescriptor(keyPath: \Singer.lastName, ascending: true),
                                  NSSortDescriptor(keyPath: \Singer.firstName, ascending: true)]
-    @State var predicateType = "BEGINSWITH"
+//    Modify the predicate string parameter to be an enum such as .beginsWith, then make that enum get resolved to a string inside the initializer.
+//    @State var predicateType = ".beginsWith"
     
     var body: some View {
         VStack {
             FilteredList(filterKey: "lastName",
                          filterValue: lastNameFilter,
                          sortDescriptors: sortDescriptor,
-                         predicateType: predicateType) {
+                         predicateType: .contains) {
                 (singer: Singer) in
                 Text("\(singer.wrappedFirstName) \(singer.wrappedLastName)")
             }
@@ -47,6 +48,10 @@ struct ContentView: View {
             
             Button("Show S") {
                 self.lastNameFilter = "S"
+            }
+            
+            Button("Contains H") {
+                self.lastNameFilter = "H"
             }
         }
     }
